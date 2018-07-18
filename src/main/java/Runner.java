@@ -8,6 +8,9 @@ public class Runner {
 
     public static void main(String[] args) {
 
+
+
+
         // BOOKS
         Book book1 = new Book("Moby Dick", "Herman Melville", 585, GenreType.ADVENTURE);
         DBHelper.save(book1);
@@ -15,6 +18,7 @@ public class Runner {
         DBHelper.save(book2);
         Book book3 = new Book("Harry Potter", "JK Rowling", 1402, GenreType.SCIFI);
         DBHelper.save(book3);
+
 
         // BORROWERS
         Borrower borrower1 = new Borrower("Benjamin");

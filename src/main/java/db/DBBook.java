@@ -9,8 +9,8 @@ public class DBBook {
     private static Session session;
 
     public static void addBookToBorrower(Book book, Borrower borrower){
-        borrower.addBook(book);
-        DBHelper.update(borrower);
+        book.setBorrower(borrower);
+        DBHelper.update(book);
     }
 
 }

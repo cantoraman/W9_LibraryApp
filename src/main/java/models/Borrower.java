@@ -45,7 +45,7 @@ public class Borrower {
     public List<Book> getBooks() {
         return books;
     }
-    public void setBooks(ArrayList<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 
