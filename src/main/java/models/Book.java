@@ -12,6 +12,7 @@ public class Book {
     String author;
     int pages;
     GenreType genre;
+    Borrower borrower;
 
     public Book(String title, String author, int pages, GenreType genre){
         this.title = title;
@@ -21,6 +22,7 @@ public class Book {
     }
 
     public Book(){}
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,5 +65,14 @@ public class Book {
     }
     public void setGenre(GenreType genre) {
         this.genre = genre;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "borrower_id", nullable = true)
+    public Borrower getBorrower() {
+        return borrower;
+    }
+    public void setBorrower(Borrower borrower) {
+        this.borrower = borrower;
     }
 }

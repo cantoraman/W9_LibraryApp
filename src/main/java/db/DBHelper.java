@@ -1,23 +1,22 @@
 package db;
-
-import models.Book;
-import models.Borrower;
-import models.Library;
-import org.hibernate.*;
+import db.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
 public class DBHelper {
-
     private static Transaction transaction;
     private static Session session;
 
-    public static void save(Object object) {
+    public static void save(Object object){
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            session.saveOrUpdate(object);
+            session.save(object);
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
@@ -27,58 +26,21 @@ public class DBHelper {
         }
     }
 
-    public static <T> List<T> getList(Criteria criteria) {
-        List<T> results = null;
-        try {
-            transaction = session.beginTransaction();
-            results = criteria.list();
-            ;
-            transaction.commit();
-        } catch (HibernateException ex) {
-            transaction.rollback();
-            ex.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return results;
-    }
-
-    public static <T> T getUnique(Criteria criteria) {
-        T result = null;
-        try {
-            transaction = session.beginTransaction();
-            result = (T) criteria.uniqueResult();
-            ;
-            transaction.commit();
-        } catch (HibernateException ex) {
-            transaction.rollback();
-            ex.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return result;
-    }
-
-    public static <T> void deleteAll(Class classType) {
+    public static void update(Object object){
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
-            Criteria cr = session.createCriteria(classType);
-            List<T> results = cr.list();
-            for (T result : results) {
-                session.delete(result);
-            }
+            session.update(object);
             transaction.commit();
-        } catch (HibernateException ex) {
+        } catch (HibernateException e) {
             transaction.rollback();
-            ex.printStackTrace();
+            e.printStackTrace();
         } finally {
             session.close();
         }
     }
 
-
-    public static void delete(Object object) {
+    public static void delete(Object object){
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction = session.beginTransaction();
@@ -92,20 +54,34 @@ public class DBHelper {
         }
     }
 
+
     public static <T> List<T> getAll(Class classType) {
         session = HibernateUtil.getSessionFactory().openSession();
-        Criteria cr = session.createCriteria(classType);
-        return getList(cr);
+        List<T> results = null;
+        try {
+            Criteria cr = session.createCriteria(classType);
+            results = cr.list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return results;
     }
 
-    public static <T> T find(int id, Class classType) {
+    public static <T> T find(Class classType, int id) {
         session = HibernateUtil.getSessionFactory().openSession();
-        Criteria cr = session.createCriteria(classType);
-        cr.add(Restrictions.eq("id", id));
-        return getUnique(cr);
-
+        T result = null;
+        try {
+            Criteria cr = session.createCriteria(classType);
+            cr.add(Restrictions.eq("id", id));
+            result = (T) cr.uniqueResult();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return result;
     }
-
 
 }
-

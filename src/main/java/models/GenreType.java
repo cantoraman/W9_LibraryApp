@@ -4,5 +4,6 @@ public enum GenreType {
     SCIFI,
     HORROR,
     ADVENTURE,
-    AUTOBIOGRAPHY
+    AUTOBIOGRAPHY,
+    FANTASY
 }
