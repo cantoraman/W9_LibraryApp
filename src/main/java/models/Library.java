@@ -8,4 +8,7 @@ public class Library {
     ArrayList<Book> books;
     ArrayList<Borrower> borrowers;
 
+    public Library(String name){
+        this.name = name;
+    }
 }
